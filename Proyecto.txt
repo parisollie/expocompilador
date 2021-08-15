@@ -1,0 +1,10 @@
+
+
+----------------------------------------------------------------------
+git clone https://github.com/hiphoox/c212-goldcompilers.git
+git pull
+
+git add -A  
+git status
+git commit   -m "Subiendo"
+git push origin master

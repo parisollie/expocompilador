@@ -1,0 +1,7 @@
+El arbol en la primera fase :
+
+Programa esta compuesta por una funcion,por lo tanto el nodo raiz pues es: programa
+ese nodo raiz apunta a la sig funcion, ese valor debe ser main
+Y el sig apunta a return y ese return tiene el valor a la constante
+Este arbol es lineal
+

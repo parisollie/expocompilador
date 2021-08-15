@@ -1,0 +1,36 @@
+https://github.com/mischov/meeseeks_html5ever/issues/26
+Se debe instalar esto en ubuntu
+cargo -V
+Intalamos ambos :
+Rust or Cargo
+Y al ultimo todo esto
+sudo mix deps.compile --all
+--------------------------------------------------------------------
+mix escript.build
+mix test
+
+
+----------------Compilando los ejemplos-------
+
+./foxy -s codec_c/StageOne/Valid/05return_2.c
+
+./foxy -s codec_c/StageTwo/Valid/13bitwise.c
+
+./foxy -s codec_c/StageThree/Valid/24add.c
+
+
+
+./foxy -s codec_c/StageThree/invalid/36malformed_paren.c
+
+-------------Para hacer pruebas ----------
+
+mix test test/First_Stage/lexer_test.exs
+mix test test/First_Stage/parser_test.exs
+
+mix test test/Second_Stage/lexer_secondStage.exs
+mix test test/Second_Stage/parser_secondStage.exs
+
+
+mix test test/Third_Stage/lexer_thirdStage.exs
+mix test test/Third_Stage/parser_thridStage.exs
+
