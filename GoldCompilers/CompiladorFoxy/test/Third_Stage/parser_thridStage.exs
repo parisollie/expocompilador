@@ -17,7 +17,10 @@ test "23.-Operation in parentheses" do
   ast= LEX.lexs("int main() {
     return ~(18 + 17);
   }")
-
+    #assert si es verdadero
+    #Nos acordamos que PAR llama a pars_prog ( el codigo que explcamos hace poco )
+    #lf_node = Es nuestro nodo izquierdo
+    #rt_node es nuestro nodo izquierdo
   assert PAR.pars_prog(ast) ==
     %AST{
       lf_node: %AST{
@@ -26,6 +29,8 @@ test "23.-Operation in parentheses" do
             lf_node: %AST{
               lf_node: %AST{
                 lf_node: nil,
+                #Hay que acordarse que cada cuando llegamos aqui se parte el codigo de acuerdo
+                 #A la explicacion del Parser que se ha comentado previamente
                 node_name: :constant,
                 rt_node: nil,
                 val: 18
@@ -494,11 +499,14 @@ test "33.-Adittion" do
 end
 #############################################Invalids###############################################################
 
+#Aqui hay errores
+
 test "34.-There is not semicolon at mul" do
   ast= LEX.lexs("int main() {
     return 2*8
   }")
-
+#Por lo cual el assert nos dira que pasa, regresamos PAR  y buscamos
+#pars_prog ,lo cual nos mandara el error
   assert PAR.pars_prog(ast) ==
     {:error,
     "I have found an error at 3: There is not semicolon "}

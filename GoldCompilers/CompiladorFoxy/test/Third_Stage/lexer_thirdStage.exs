@@ -10,11 +10,18 @@ defmodule LexerTest3 do
   doctest LEX
 
   ##################################################### Third stage #####################################################
+
+    #Tenemos que ir a LEX y buscamos la funcion lex que acabamos de decir como funciona esta funcion
+    #Le digo verificame : Acaso estos tokens se encuentran ?
   test "35.-Operation add" do
     tlist=LEX.lexs("int main(){
       return 1+9;
     }")
+     #assert nos devuelve algo si es verdadero
     assert tlist==[
+      #Checamos que todo los toquens esten ,para que no haya errores en este ejemplo
+      #Podemos ver Todos los tokens provenientes de LEX
+      #Como no hay errores ,termino correctamente y va al parser
       {:type, 1, [:intKeyWord]},
       {:ident, 1, [:mainKeyWord]},
       {:left_paren, 1, []},
@@ -87,7 +94,8 @@ defmodule LexerTest3 do
   end
 
   ############################################## Errors ###################################################################
-
+    #Aqui tenemos un ejemplo el cual no tiene el int
+    #Por tanto al compilar este codigo nos mostrara un error
   test "39.-Operation add not int" do
     tlist=LEX.lexs(" main(){
       return 1+9;

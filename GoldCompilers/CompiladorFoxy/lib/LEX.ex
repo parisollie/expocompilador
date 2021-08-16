@@ -7,10 +7,16 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
+# Miguel
+
+#Este es el primer paso de nuestro compilador
+
 #EL lexer solo tiene la funcion de ver que los tokens, que estos tokens sean validos
+
 #identificarlos ,etiquetarlos y colocarlos en un arreglo.
 
 # Esta integración validará esto:
+
 # Validara nuestra lista de tokens.
 # La salida será una lista de tuplas de cadenas de átomos.
 #Si hay un error, nos mostrará una lista de tuplas con el token, así como
@@ -21,7 +27,9 @@ defmodule LEX do
   @spec lexer(any, any) :: [{any, any, list | integer}]
   def lexer(l_c, col_Num) do
     #Esta es la lista de tokens que usaremos las 3 entregas
-    #Mostramos la lista de tokens
+
+    #Mostramos la lista de tokens:
+
     ############################# Primera entrega ##############################################################
     tokens = [
       {:type, :intKeyWord},#               int
@@ -44,8 +52,9 @@ defmodule LEX do
     ##################################################### Primera entrega #######################################
     #Mapeamos nuestro kewyword list
     mapp_to_kw = fn a -> {tokenToStr(a), a} end
-    #Enum.map es enumerame las key words  y hace
+    #Enum.map : enumerame las key words  y hace el mapeo de las keyword list
     key_words=Enum.map(tokens,mapp_to_kw)
+
     ######Todos los espacios independiendo del numero consecuntivo de los espacios
     spaces = ~r(^[ \h]+)
      # \ n los saltos de línea
@@ -76,6 +85,7 @@ defmodule LEX do
         #We convert to integer
         #Run-Ejecuta la expresión regular contra la cadena dada hasta la primera coincidencia.
         #Esta nos Devuelve una lista con todas las capturas o nula si no se produjo ninguna coincidencia.
+
         #a traves de to integer le paso el valor
         num = String.to_integer(List.first(Regex.run(numbs, l_c)))#Convertimos a entero
         [
@@ -84,7 +94,7 @@ defmodule LEX do
         ]
 
       true ->
-        #checkWW es el check key word list para checar los tokens
+        #checkWW es el check key word list,con esto checamos  los tokens
         {result, tokenStr} = checkKW(l_c, key_words)
         cond do
           # Mostraremos la key word list si es que existe
@@ -120,11 +130,12 @@ defmodule LEX do
     end
   end
 
-  #lexs
+  ############################################### lexs ###################################################
   def lexs(l_c) do
     #If we find something strange, we will notify you that you found
     #Le damos exactamente la linea en cual esta el error
     col_Num = 1
+    #Nos vamos al llamado de la funcion lexer
     lexer(l_c, col_Num)
   end
 ############################# Primera entrega #################################################################
@@ -161,6 +172,7 @@ defmodule LEX do
         "main" #  main
       ################################################ Segunda entrega #######################################
       #Unary type
+      #:op significa el operando
       {:op, :neg} ->
         "-"
       {:op, :log_Neg} ->
@@ -177,6 +189,9 @@ defmodule LEX do
          "*"
 
       ################################################Default syntax##########################################
+
+      #Todos deben llevar por defecto:
+
       {:left_brace} ->
          "{"
       {:right_brace} ->

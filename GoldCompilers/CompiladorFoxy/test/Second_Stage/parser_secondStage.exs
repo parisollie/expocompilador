@@ -14,6 +14,10 @@ defmodule PAERSERTest2 do
     ast= LEX.lexs("int main() {
     return ! 17;
     }")
+    #assert si es verdadero
+    #Nos acordamos que PAR llama a pars_prog ( el codigo que explcamos hace poco )
+    #lf_node = Es nuestro nodo izquierdo
+    #rt_node es nuestro nodo izquierdo
     assert PAR.pars_prog(ast) ==
     %AST{
       lf_node: %AST{
@@ -21,6 +25,8 @@ defmodule PAERSERTest2 do
           lf_node: %AST{
             lf_node: %AST{
               lf_node: nil,
+               #Hay que acordarse que cada cuando llegamos aqui se parte el codigo de acuerdo
+              #A la explicacion del Parser que se ha comentado previamente
               node_name: :constant,
               rt_node: nil,
               val: 17
@@ -257,11 +263,13 @@ defmodule PAERSERTest2 do
 
 
 ###################################### Invalidos ############################################################
-
+ #En este caso hay error
 test "19.-There is no return" do
   ast= LEX.lexs("int main() {
   return ! ;
   }")
+  #Por lo cual el assert nos dira que pasa, regresamos PAR  y buscamos
+    #pars_prog ,lo cual nos mandara el error
   assert PAR.pars_prog(ast) == {:error, "I have found an error at 2: An integer val is expected"}
 end
 

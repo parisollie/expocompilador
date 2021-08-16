@@ -42,6 +42,7 @@ defmodule FOXY do
         #Aqui se ira al LEX y se va la funcion lexs y esta dice:
         #If we find something strange, we will notify you that you found
         toks = LEX.lexs(File.read!(path))
+        #Nos vamos a PAR y esta se va a la funcion pars_prog y esta revisa a los tokens
         ast = PAR.pars_prog(toks)
         assemCod = CODEGENERATOR.gnt_Code(ast)
         IO.puts(assemCod)
@@ -54,6 +55,7 @@ defmodule FOXY do
         #Aqui se ira al LEX y se va la funcion lexs y esta dice:
         #If we find something strange, we will notify you that you found
         toks = LEX.lexs(File.read!(path))
+        #Nos vamos a PAR y esta se va a la funcion pars_prog y esta revisa a los tokens
         ast = PAR.pars_prog(toks)
         assemCod = CODEGENERATOR.gnt_Code(ast)
         LINK.genBin(assemCod, path)

@@ -4,6 +4,10 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
+#( Diana )
+
+
+#Este es el tercer paso de nuestro compilador
 
 # Esta integración nos permitirá establecer la siguiente funcionalidad básica:
 #Tome el AST generado por el Analizador para construir el código en ensamblador, desde las hojas hasta la raíz.
@@ -16,7 +20,7 @@ defmodule CODEGENERATOR do
   # El generador de codigo navegara ,para que construya el codigo
   #en este caso la salida es, en lenguaje ensamblador
   #Para que asi el gcc tome el ensamblador y haga el ejecutable
-  #Eso depende de cada sistema operativo en nuestro caso funcion en Windows como Ubuntu
+  #Eso depende de cada sistema operativo en nuestro caso funcion en Windows como Ubuntu de 64 bits
   def gnt_Code(ast) do
     #Le damos el algortimo post orden
     code = post_order(ast," ")
@@ -53,7 +57,7 @@ defmodule CODEGENERATOR do
 
   @spec emit_code(:constant | :function | :program | :return, any, any) :: <<_::8, _::_*8>>
   #Depende es a la version es lo que va a pasar
-  #En nuestro caso es un ensamblador de
+  #En nuestro caso es un ensamblador de 64 bits
   def emit_code(:program, codeSnipped, _) do
     """
     .section        __TEXT,__text,regular,pure_instructions
@@ -118,6 +122,8 @@ defmodule CODEGENERATOR do
       """
   end
 ############################################################ Tercera entrega ###############################
+# Paul
+
     #Para manejar una expresión binaria, como: e1 + e2, nuestro ensamblador generado necesita:
 
    # Calcular e1 y debemos guardardarlo en algún lugar de acuerdo al documento de Nora.
@@ -171,7 +177,7 @@ defmodule CODEGENERATOR do
   end
  #La dirección de la parte superior de la pila se almacena en el registro ESP, también conocido
   #como puntero de pila. Al igual que con la mayoría de las pilas, puede empujar cosas hacia arriba
-  #o sacar cosas de la parte superior; x86 incluye pushe and  popinstrucciones para hacer precisamente eso.
+  #o sacar cosas de la parte superior; x64 incluye pushe and  popinstrucciones para hacer precisamente eso.
 
 
   def push_Up(ast_node) do

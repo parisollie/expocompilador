@@ -4,12 +4,16 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
+
+# Miguel
+
+
 #Este es el ultimo paso de nuestro compilador,si ya llegamos aqui
 #quiere decir que nuestro programa reconocio los tokens, checo que los tokens esten ordenados
-#y se haya creado el AST
+#y que se haya creado el AST
+
 #Linker: es un programa del sistema informático que toma uno o más archivos objeto generados por un
-#compiler o un ensamblador y los combina en un solo archivo ejecutable, archivo de biblioteca,
-# u otro archivo 'objeto'
+#compiler o un ensamblador y los combina en un solo archivo ejecutable
 
 defmodule LINK do
   #genBin function, receives the assembly code and the path where I want it to be saved

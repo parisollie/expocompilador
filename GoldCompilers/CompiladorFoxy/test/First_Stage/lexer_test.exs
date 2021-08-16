@@ -11,9 +11,11 @@ defmodule LEXERTest do
 
   #We started doing our tests
 #####################################################First stage ###########################################################
- #Nos Vamos al LEX y buscamos lexs,este nos dira los toquens que vamos a necesitar
+
+# Paul
+#Nos Vamos al LEX y buscamos lexs,este nos dira los toquens que vamos a necesitar
   test "1.-Test_to_pass" do
-    #ast es nuestro AST o arbol
+
     #Tenemos que ir a LEX y buscamos la funcion lex que acabamos de decir como funciona esta funcion
     #Le digo verificame : Acaso estos tokens se encuentran ?
     ast = LEX.lexs("int main() {
