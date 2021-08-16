@@ -5,10 +5,10 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
-
+ #Diana
 defmodule FOXY do
   def main(args) do
-    # Our compiler options
+    # Las opciones de nuestro compildor
     case args do
       ############################################ HELP #################################################
       ["-h"] ->

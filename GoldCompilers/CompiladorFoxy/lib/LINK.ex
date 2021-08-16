@@ -5,7 +5,7 @@
 
 #############################################################################################################
 
-# Miguel
+# Diana
 
 
 #Este es el ultimo paso de nuestro compilador,si ya llegamos aqui
@@ -16,13 +16,13 @@
 #compiler o un ensamblador y los combina en un solo archivo ejecutable
 
 defmodule LINK do
-  #genBin function, receives the assembly code and the path where I want it to be saved
+  #Función genBin, recibe el código ensamblador y la ruta donde quiero que se guarde
   def genBin(assem, aseem_loc) do
     #Aqui armamos los paths ,le decimos al gcc que de donde tomara el arcvhivo,
     #tomara el codigo ensambaldor y vera hacia  donde lo manda y hara que genere el ejecutable
     aseem_loc = String.replace_trailing(aseem_loc, ".c", ".s")
-    #We put the extensions
-    #The name of our assembler
+    #Ponemos las extensiones
+    # El nombre de nuestro ensamblador
     assem_name = Path.basename(aseem_loc)
     bin_name = Path.basename(aseem_loc, ".s")
     output_dir_name = Path.dirname(aseem_loc)
@@ -31,17 +31,15 @@ defmodule LINK do
     #mandamos a escribir el codigo ensamblador,porque el GCC va a ir a leer el archivo donde
     #se encuentre el ensamblador
     File.write!(aseem_loc, assem)
-    #I call gcc as the final stage and tell it that it will have the executable con cmd
-    #The cmd also works for ubuntu
+    # Llamo a gcc como etapa final y le digo que obtendrá el ejecutable con cmd
+     # El cmd también funciona para ubuntu
 
-    #Mandamos a llamar el gcc el nombre del archivo que le pasamos con -o el nombre del binario
+    #Mandamos a llamar el gcc ,el nombre del archivo se lo pasaremos con (-o) el nombre del binario
     #y le decimos el directorio donde no los va a colocar.
 
     System.cmd("gcc", [bin_name <> ".c", "-o#{bin_name}"], cd: output_dir_name)
-    #Once done save it to the specified path
+    # Una vez hecho, guárdelo en la ruta especificada
 
-    #######Al final removemos el codigo ensambalador para que no haya basura
-    #File.rm!(assem_loc)
 
     #Finalmente mostramos el nombre de nuestro compilador en pantalla
 

@@ -3,6 +3,8 @@
 #Felix Flores Paul Jaime ( Tester )
 #San Juan Aldape Diana Paola  (The System Integrator)
 
+#Miguel
+
 #Aqui le decimos como una estructura, le decimos la forma de la estructura
 #La estructura tienen un nombre, tienen un valor, un nodo derecho y un nodo izquierdo
 defmodule AST do

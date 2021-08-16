@@ -7,11 +7,11 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
-# Miguel
+#Miguel
 
 #Este es el primer paso de nuestro compilador
 
-#EL lexer solo tiene la funcion de ver que los tokens, que estos tokens sean validos
+#EL lexer solo tiene la funcion de reconocer los tokens y que estos tokens sean validos
 
 #identificarlos ,etiquetarlos y colocarlos en un arreglo.
 
@@ -19,8 +19,7 @@
 
 # Validara nuestra lista de tokens.
 # La salida será una lista de tuplas de cadenas de átomos.
-#Si hay un error, nos mostrará una lista de tuplas con el token, así como
-#la columna y la fila incorrectas.
+#Si hay un error, nos mostrará una lista de tuplas con el token, así como la columna y la fila incorrectas.
 
 defmodule LEX do
 
@@ -65,9 +64,10 @@ defmodule LEX do
     #Todos los caracteres
     #\ son los delimitadores
     alph = ~r{(^[a-zA-Z]\w*)|(\|\|)}
-    #Los numeros independientemente del total del numero consecutivo de enteros
+    ########Los numeros independientemente del total del numero consecutivo de enteros
     numbs = ~r(^[0-9]+)
 
+    #Hacemos una condicional
     cond do
       l_c == "" -> # La flecha significa ,si se cumple esto ejecutame esto
         []
@@ -78,16 +78,16 @@ defmodule LEX do
         lexer(Regex.replace(spaces, l_c, "", global: false), col_Num)
 
       Regex.match?(line_br, l_c) -> # line_br, new lines
-        #Increase the column number
+        #Incrementa el numero de la columna
         lexer(Regex.replace(line_br, l_c, "", global: false), col_Num + 1)
 
       Regex.match?(numbs, l_c) ->
-        #We convert to integer
+        #Convertimos a entero
         #Run-Ejecuta la expresión regular contra la cadena dada hasta la primera coincidencia.
-        #Esta nos Devuelve una lista con todas las capturas o nula si no se produjo ninguna coincidencia.
+        #Esta nos devuelve una lista con todas las capturas o nula si no se produjo ninguna coincidencia.
 
-        #a traves de to integer le paso el valor
-        num = String.to_integer(List.first(Regex.run(numbs, l_c)))#Convertimos a entero
+        #a traves de (to integer) le paso el valor
+        num = String.to_integer(List.first(Regex.run(numbs, l_c)))
         [
              {:num, col_Num, num}
              | lexer(Regex.replace(numbs, l_c, "", global: false), col_Num)
@@ -102,7 +102,7 @@ defmodule LEX do
             case tokenStr do
               {str, {x, y}} ->
                 #replace_leading:
-                # Reemplaza todas las apariciones principales de coincidencia reemplazando la coincidencia
+                # Reemplaza todas las apariciones principales de coincidencia,reemplazando la coincidencia
                 # en la cadena.
                 # Devuelve la cadena intacta si no hay ocurrencias.
                 #Enparejamos la lista
@@ -114,16 +114,16 @@ defmodule LEX do
                     ]
             end
 
-          # If we don't find anything
+          # Si no encontramos nada
           Regex.match?(alph, l_c) ->
-            #Return the matches
+            #Regresamos los emparejamientos
             identify = List.first(Regex.run(alph, l_c, [{:capture, :first}]))
-            #We pair the column and the matches
+            #Emparejamos la columna con nuestros emparejamientos
             token = {:string, col_Num, [identify]}
-            #We take the token if we found it
+            #Tomamos el token ,si lo encontramos
             [token | lexer(Regex.replace(alph, l_c, "", global: false), col_Num)]
           true -> #de otra manera
-            #if we don't find anything le concatenamos el error y la linea donde esta
+            #Si no encontramos nada ,le concatenamos el error y la linea donde se encuentra :
             raise "---We found an error :/ in:  " <>"#{l_c}" <> "on the column line:  "
              <> "#{col_Num}"
         end
@@ -132,7 +132,8 @@ defmodule LEX do
 
   ############################################### lexs ###################################################
   def lexs(l_c) do
-    #If we find something strange, we will notify you that you found
+    #Si encontramos algo,te notificara que encontro
+
     #Le damos exactamente la linea en cual esta el error
     col_Num = 1
     #Nos vamos al llamado de la funcion lexer
@@ -207,7 +208,7 @@ defmodule LEX do
 
   def checkKW(input, key_words) do
     Enum.reduce_while(key_words, {}, fn {key, val}, _ ->
-      #we review the collections
+      #Revisamos las colecciones
       if !String.starts_with?(input, key) do
         #Cont,continua la iteracion
         {:cont, {false, {}}}

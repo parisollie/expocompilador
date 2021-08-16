@@ -3,6 +3,7 @@
 #Felix Flores Paul Jaime ( Tester )
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
+#Diana
 #############################################################################################################
 defmodule LexerTest3 do
 

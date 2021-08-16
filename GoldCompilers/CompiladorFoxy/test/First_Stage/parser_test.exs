@@ -10,7 +10,7 @@ defmodule PAERSERTest do
   use ExUnit.Case
   doctest PAR
 #################################################### Primera entrega ###########################################
- # Diana
+ # Paul
   test "1.-Test_to_pass" do
     ast= LEX.lexs("int main() {
     return 2;
@@ -19,7 +19,7 @@ defmodule PAERSERTest do
     #assert si es verdadero
     #Nos acordamos que PAR llama a pars_prog ( el codigo que explcamos hace poco )
     #lf_node = Es nuestro nodo izquierdo
-    #rt_node es nuestro nodo izquierdo
+    #rt_node es nuestro nodo derecho
     assert PAR.pars_prog(ast) ==
       %AST{lf_node:
         %AST{lf_node:

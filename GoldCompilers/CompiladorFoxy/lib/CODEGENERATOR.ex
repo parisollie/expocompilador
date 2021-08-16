@@ -4,23 +4,33 @@
 #SanJuan Aldape Diana Paola  (The System Integrator)
 
 #############################################################################################################
-#( Diana )
+#( Miguel)
 
 
 #Este es el tercer paso de nuestro compilador
 
-# Esta integración nos permitirá establecer la siguiente funcionalidad básica:
-#Tome el AST generado por el Analizador para construir el código en ensamblador, desde las hojas hasta la raíz.
-# La salida será una cadena con el código representativo en ensamblador.
-#el recibe el arbol del parser
+#Esta integración nos permitirá establecer la siguiente funcionalidad básica:
+#Tome el AST generado por el PARSER para construir el código en ensamblador, desde las hojas hasta la raíz.
+#La salida será una cadena con el código representativo en ensamblador.
+
+#****************************************************************************************
+#Variables a saber
+
+#EAX (Accumulator). Para operaciones aritm ́eticas
+#ECX (Counter). Contador para bucles (como la variable ’i’ en C).
+#EBX (Base). Puntero a datos o a primer elemento del vector (la base del vector).
+
+#****************************************************************************************
+
 defmodule CODEGENERATOR do
 #################################################### Primera entrega #######################################
-  #The code generator receives the tree
-  #osea recibe el AST
+
   # El generador de codigo navegara ,para que construya el codigo
-  #en este caso la salida es, en lenguaje ensamblador
-  #Para que asi el gcc tome el ensamblador y haga el ejecutable
-  #Eso depende de cada sistema operativo en nuestro caso funcion en Windows como Ubuntu de 64 bits
+  #en este caso la salida es: en lenguaje ensamblador
+  #De esta manera el gcc tomara el ensamblador y entonces hara  el ejecutable
+  #Eso depende de cada sistema operativo ,en nuestro caso funciona en Windows tanto como Linux de 64 bits
+  #usamos el AT&T syntax
+
   def gnt_Code(ast) do
     #Le damos el algortimo post orden
     code = post_order(ast," ")
@@ -34,7 +44,7 @@ defmodule CODEGENERATOR do
         ""
 
       ast_node ->
-        #Si hay mas elementos ,partimos de la raiz del arbol y bamos bajando.
+        #Si hay mas elementos ,partimos de la raiz del arbol y vamos bajando.
         if ast_node.node_name == :constant do
           emit_code(:constant, codeSnipped, ast_node.val)
         else
@@ -45,7 +55,7 @@ defmodule CODEGENERATOR do
             post_order(ast_node.lf_node, codeSnipped) <>
             push_Up(ast_node) <>
             #pasamos al nodo derecho
-            #Code snipped es el fragmento del codigo que le pasamos
+            #Code snipped ,es el fragmento del codigo que le pasamos
             post_order(ast_node.rt_node, codeSnipped) <>
             pop_Up(ast_node),
             ast_node.val
@@ -56,8 +66,8 @@ defmodule CODEGENERATOR do
   end
 
   @spec emit_code(:constant | :function | :program | :return, any, any) :: <<_::8, _::_*8>>
-  #Depende es a la version es lo que va a pasar
-  #En nuestro caso es un ensamblador de 64 bits
+  #Esta parte del codigo depende de que  version vamos a usar
+  #En nuestro caso es un ensamblador de x64 bits
   def emit_code(:program, codeSnipped, _) do
     """
     .section        __TEXT,__text,regular,pure_instructions
@@ -65,18 +75,18 @@ defmodule CODEGENERATOR do
     """ <>
       codeSnipped
   end
-
+  #_main: ;Nuestra etiqueta para el comienzo de la funcion "main"
+  #movl $2, %eax  ; Movl :Mueve la constante "2" dentro del  EAX register
+  #esto es para nuestro primer ejemplo.
   def emit_code(:function, codeSnipped, :main) do
     """
     .globl  _main         ## -- Begin function main
     _main:                    ## @main
     """ <>
-    #Le pegamos el pedazo del codigo, <> concatenar
+    #Le pegamos el pedazo del codigo, "<>" concatenar
       codeSnipped
   end
-#_main:              ; etiqueta para el comienzo de la funcion "main"
-#movl    $2, %eax    ; Mueve la constante "2" dentro del  EAX register
-#ret                 ; Retornamos la funcion
+#ret ; Retornamos la funcion
 
   def emit_code(:return, codeSnipped, _) do
     codeSnipped <>
@@ -84,8 +94,9 @@ defmodule CODEGENERATOR do
       ret
     """
   end
-  # EAX register contains (constante)
+  # EAX register contiene la (constante)
   #(% eax) es la ubicación de la memoria cuya dirección está contenida en el registro
+  #movl:  Mueve el valor al EAX register
   def emit_code(:constant, _codeSnipped, val) do
     """
     movl    #{val}, %eax
@@ -93,19 +104,15 @@ defmodule CODEGENERATOR do
   end
 ######################################################## Segunda entrega ###################################
   def emit_code(:unary, codeSnipped, :neg) do
-    #now EAX register contains -(constante)
+    #aqui EAX register contiene a la neg
     codeSnipped <>
       """
       neg    %eax
       """
   end
-  #instrucciones en ensamblador
-
- #cmpl es Una función con complejidad ciclomática superior a 10 se dividirá en múltiples subfunciones
- #para simplificar la lógica de la función.
- #  movl   $0, %eax Mueve la constante "0" dentro del  EAX register
- #sete al nos muestra , cuáles son los operandos, lo único importante
- #es el mnemónico.
+# cmpl $0: es como si dijeramos  a == 0 ? y lo movemos al eax register
+ # movl   $0, %eax : Mueve la constante "0" dentro del  EAX register
+ #sete al : nos muestra , cuále es el operando
   def emit_code(:unary, codeSnipped, :log_Neg) do
     codeSnipped <>
       """
@@ -114,7 +121,7 @@ defmodule CODEGENERATOR do
       sete   %al
       """
   end
- #Ahora el rax contiene el simbolo not
+ #Ahora el rax contine al Bitewise complement eso significa el not
   def emit_code(:unary, codeSnipped, :bW) do
     codeSnipped <>
       """
@@ -122,26 +129,25 @@ defmodule CODEGENERATOR do
       """
   end
 ############################################################ Tercera entrega ###############################
-# Paul
+#
 
     #Para manejar una expresión binaria, como: e1 + e2, nuestro ensamblador generado necesita:
 
-   # Calcular e1 y debemos guardardarlo en algún lugar de acuerdo al documento de Nora.
+   # Calcular e1 y debemos guardarlo en algún lugar de acuerdo al documento de Nora.
     #Calculamos  e2.
     #Anadir e1 a e2, y almacenar el resultado en EAX.
 
     #Entonces, necesitamos un lugar para guardar el primer operando.
     #Guardarlo en un registro sería complicado;
     #el segundo operando puede contener subexpresiones, por lo que también puede ser necesario guardar
-     #los resultados intermedios en un registro
-     #En su lugar, guardaremos el primer operando de la pila ,de acuerdo al documento de Nora.
+    #los resultados intermedios en un registro
+    #En su lugar, guardaremos el primer operando de la pila ,de acuerdo al documento de Nora.
 
-    #Asi que de acuerdo al docmuento de Nora
-    #<CODE FOR e1 >
-    #push %rax ; guardar el valor de e1 en la pila
-    #<CODE FOR e2 >
-    #pop %rbx ; hacemos pop e1 desde el apilamiento  dentro ecx
-    #addl %rbx, %eax ; add e1 to e2, save results in eax
+    #******************************************************************************************
+
+    #pop %rax : sacar el valor más alto de la pila al registro% rax
+    #add Agrega  nos va  sumar  %rax con %rcx, osea e1 + e2
+
   def emit_code(:binary, codeSnipped, :add) do
     codeSnipped <>
       """
@@ -149,7 +155,8 @@ defmodule CODEGENERATOR do
       add     %rax, %rcx
       """
   end
-
+#sub: resta rax de rbx
+#mueve %rbx dentro de rax
   def emit_code(:binary, codeSnipped, :neg) do
     codeSnipped <>
       """
@@ -157,13 +164,19 @@ defmodule CODEGENERATOR do
       mov    %rbx, %rax
       """
   end
-
+#Multiplica registro por el registro 2
   def emit_code(:binary, codeSnipped, :mul) do
     codeSnipped <>
       """
       imul   %rbx, %rax
       """
   end
+#para la divicion es mas complicada
+#pus rax :save rax to the stack
+#pop %rbx :empujar el valor de% rbx a la pila
+#mueve %rbx dentro de rax
+#idvq : Es el cociente almacenado en% rbx
+
 
   def emit_code(:binary, codeSnipped, :div) do
     codeSnipped <>
@@ -178,8 +191,9 @@ defmodule CODEGENERATOR do
  #La dirección de la parte superior de la pila se almacena en el registro ESP, también conocido
   #como puntero de pila. Al igual que con la mayoría de las pilas, puede empujar cosas hacia arriba
   #o sacar cosas de la parte superior; x64 incluye pushe and  popinstrucciones para hacer precisamente eso.
+  # aqui estan nuestras funciones pop and push.
 
-
+  ##push rax guardar rax en la pila
   def push_Up(ast_node) do
 
       if ast_node.node_name == :unary and ast_node.val == :neg and ast_node.rt_node == nil do
@@ -194,7 +208,7 @@ defmodule CODEGENERATOR do
   end
 
   def pop_Up(ast_node) do
-
+     #pop %rbx empujar el valor de% rbx a la pila
       if ast_node.node_name == :unary and ast_node.val == :neg and ast_node.rt_node == nil do
         ""
       else

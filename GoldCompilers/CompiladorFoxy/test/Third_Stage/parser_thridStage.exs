@@ -20,7 +20,7 @@ test "23.-Operation in parentheses" do
     #assert si es verdadero
     #Nos acordamos que PAR llama a pars_prog ( el codigo que explcamos hace poco )
     #lf_node = Es nuestro nodo izquierdo
-    #rt_node es nuestro nodo izquierdo
+    #rt_node es nuestro nodo derecho
   assert PAR.pars_prog(ast) ==
     %AST{
       lf_node: %AST{

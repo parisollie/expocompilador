@@ -5,10 +5,6 @@
 
 #############################################################################################################
 # ( Primera etapa Paul)
-# ( Miguel segunda eatapa)
-# ( Diana tercera etapa)
-
-
 
 #Este es el segundo paso de nuestro compilador
 
@@ -18,18 +14,19 @@
 
 #Generara un AST con la lista de tuplas creada por Lexer.
 #Si hay algún error, nos mostrará una lista de tuplas con el token que genera el error, la columna,
-# y la fila.
+# y la fila respectivamente.
 
 #El analizador nos devuelve el AST, esto es porque tiene la sintaxis exacta, de lo contrario devuelve un error.
 
 defmodule PAR do
 #Conseguimos la lista de tokens,esto depende  de que etapa mandamos a llamar ,osea lo que nos da el LEXEr
 
+#En nuestro primer ejemplo tenemos estos tokens :
 #[int,main,(,),{,return,2,;,}]
 
 #Parse program ,lo que hace es como un programa que  es equivalente a function
-#Si nuestro compilador soportara ,el que nuestro programa tuviera mas funciones dentro del program
-#deberia haber un ciclo ,pero en este caso nada mas tenemos  una funcion
+#Si nuestro compilador soportara ,el que nuestro programa tuviera mas funciones dentro del program deberia
+#haber un ciclo ,pero en este caso nada mas tenemos  una funcion
 #en todo el proyecto,pues nada mas habra una funcion osea (pars_func)
 
 #SI TODO ES EXITOSO NOS DARA LA FUNCION y el AST
@@ -51,10 +48,11 @@ defmodule PAR do
       {{:error, show_Message_Error}, token_list_final} ->
         {{:error, show_Message_Error}, token_list_final}
         {:error, show_Message_Error}
-      #Our node function checks that there are no more elements in the tuple
+       #Nuestro nodo funcion checa que ya no tenemos mas elementos en la tupla
+
       {function_node, token_list_final} ->
         if token_list_final == [] do#aqui  es donde preguntamos:¿La lista de tokens,esta vacia ?
-
+          #Si ya esta vacia entonces
           #Add the root to the AST
           #Since everything is fine, the last node is added is that our root node
 
@@ -81,6 +79,7 @@ defmodule PAR do
 
   @spec next(nonempty_maybe_improper_list) :: any
   def next(token_list_final) do
+    #Con esta funcion tomaremos el siguiente token
     #Take the next element
     first = Tuple.to_list(hd(token_list_final))
     #We get the keyword
@@ -91,10 +90,12 @@ defmodule PAR do
         List.last(first)
       else
         first = Tuple.to_list(hd(token_list_final))
-        #We get the val (it cuould be "int" or "main")
+
+        #Retornamos el ultimo elemento de la lista
         List.last(List.last(first))
       end
     else
+      #sino retornamos una nueva lista con toda la tupla de elmentos
       first = Tuple.to_list(hd(token_list_final))
       List.first(first)
     end
@@ -149,7 +150,7 @@ defmodule PAR do
 
                         #***************** PRIMERA ESPERA ***************************************************
 
-                        #Here he waits and goes to: parse_statment
+                        #Entonces le digo espera aqui y vete a  parse_statment.....
                         statement = parse_statement(next_Token, token_list_final)
 
                         case statement
@@ -209,13 +210,13 @@ defmodule PAR do
 
 #Le digo  a Parse_statment , checa que si los tokens que te mando corresponden a un statment:
 
-#Parse statmen recibe en este ejemplo [return,2,;}],porque son los tokens  que nos faltan
+#Parse statmen recibe en este ejemplo: [return,2,;}],porque son los tokens  que nos faltan
 
   def parse_statement(next_Token, token_list_final) do
-    #Checamos si esta la palabra return,como su esta lo quita y ahora vamos a buscar el entero.
+    #Checamos si esta la palabra return,como si esta lo quita y ahora vamos a buscar el entero.
     if next_Token == :returnKeyWord do
       token_list_final = List.delete_at(token_list_final, 0)
-      #It stays on hold and goes to :expression
+      #Le digo permanece aqui y vete a parse_expression
 
       #******************************************** SEGUNDA ESPERA **************************************
 
@@ -272,7 +273,7 @@ def parse_unary(token_list_final) do
   testing= List.last(first)
 
   ######## ENCONTRAR LOS OPERANDOS DE LA SEGUNDA ENTREGA ##################################################
-
+ #Hacemos un cast para saber que tenemos neg,log neg o bitewise
   case {next_Token, testing} do
 
     {:op, [:neg]} -> # Tenemos el toquen de negacion ? "-",:op = es el operadpr
@@ -453,10 +454,11 @@ end
   def parse_factor(token_list_final) do
     next_Token = next(token_list_final)
     #to_list(enumerable)
-    #Converts enumerable to a list.
+    #Convertimos nuestra lista a tupla y tomamos la cabeza.
     first = Tuple.to_list(hd(token_list_final))
     #Retornamos el ultimo elemento de la lista o nulo si la lista esta vacia
     testing = List.last(first)
+    #Hacemos un case
     case {next_Token, testing} do
       #En caso de error se lo mandamos
       {{:error, show_Message_Error}, token_list_final} ->
@@ -464,17 +466,17 @@ end
 
       ################################# YA ENCONTRAMOS AL NUMERO ############################################
 
-      {:num, numero} -> #Si tenemos el valor,aqui creamos el nodo
+      #Si tenemos el valor,aqui creamos el nodo
+      {:num, numero} ->
 
-        #Si no tenemos el valor del numero ,seguimos buscando mas tokens
+        #Si no tenemos el valor del numero ,seguimos buscando mas tokens (es para otros ejemplos)
 
         token_list_final = List.delete_at(token_list_final, 0)
-        #El nodo tiene el nombre y el valor,aqui viene
-        # token_list_finalel
+        #Aqui ya tienes el valor del numero
 
 
         #PARA LA PRIMERA REGESAMOS A DONDE DICE (SEGUNDA ESPERA)*********************************
-        #Para la SEGUNDA VEZ REGRESAMOS A DONDE DICE (SEGUNDA ESPERA)
+
         #Para la TERCERA VEZ  DEBEMOS REGRESAR VARIAS VECES ,PORQUE SON VARIOS OPERANDOS
         #HASTA TENER EL ULTIMO OPERANDO PODEMOS REGRESAR A  (SEGUNDA ESPERA)
 
@@ -483,11 +485,12 @@ end
         {%AST{node_name: :constant, val: numero}, token_list_final}
 
         ####En caso de la tercera entrega debemos seguir buscando mas tokens ,por lo que seguimos buscando
-        ## en el ejemplo de 2 + 2 ,ya tenemos un dos aora buscaremos el (+)
+        ## en el ejemplo de 2 + 2 ,ya tenemos un dos ahora buscaremos el (+)
 
-        {:left_paren, []} -> #
+        {:left_paren, []} -> # Tenemos parentesis izquierdo ?
 
         token_list_final = List.delete_at(token_list_final, 0)
+        #si lo tenemos quita el toquen.
         expression= parse_expression(token_list_final)
 
         case expression do
@@ -498,13 +501,12 @@ end
           {expression_node, token_list_final} ->
             [next_Token | rest]= token_list_final
             #to_list(enumerable)
-             #Converts enumerable to a list.
              #aqui convertimos la tupla a lista
             first= Tuple.to_list(next_Token)
-            #Regresamos el primer elemento
+            #Regresamos el primer elemento de la lista
             testing= List.first(first)
-            if testing== :right_paren do
-              {expression_node, rest}
+            if testing== :right_paren do #Tenemos el parentesis que cierra ?
+              {expression_node, rest} # entonces quitalo
             else
               sec_expression= parse_expression(token_list_final)
               {node_expression, _} = expression
@@ -514,13 +516,13 @@ end
             end
         end
 
-      {:op, _} ->
+      {:op, _} -> # Si tenemos otro token diferente al numero
 
         #Aqui le decimos ve a parse unary,porque para la segunda entrega debemos checar antes lo sig
         #debemos ver si no hay mas tokens antes de econtrar al numero.
         #  "-" ,   "!" ,   "!"
         parse_unary(token_list_final)
-      _ ->
+      _ -> #Si no tenemos nada de esto manda error
         line = line(token_list_final)
         {{:error, "I have found an error at #{line}: An integer val is expected"}, token_list_final}
     end
@@ -529,7 +531,7 @@ end
 
 #Parse Expresion nos dira el valor del return
 #De aqui nos vamos ir  SALTANDO recursivamente entre las funciones creadas,asi hasta llegar al valor,
-#no es directo porque tenemos las tres entregas inplementadas y como no es trivial
+#no es directo porque tenemos las tres entregas inplementadas y como no es algo trivial
 #por tanto , se seguira este algoritmo en las tres entregas.
 
 def parse_expression(token_list_final) do
@@ -575,7 +577,7 @@ def parse_expression(token_list_final) do
   def  parse_relatExp(token_list_final) do
     #Le decimos vete a parse bin  y espera aqui
 
-    #pars_bin ES PARA LA SEGUNA entrega
+    #pars_bin ESTA EN  LA tercera entrega
     binary= pars_bin(token_list_final)
     case binary do
       #En caso de error se lo mandamos
