@@ -13,12 +13,12 @@
 #y que se haya creado el AST
 
 #Linker: es un programa del sistema informático que toma uno o más archivos objeto generados por un
-#compiler o un ensamblador y los combina en un solo archivo ejecutable
+#compilador o un ensamblador y los combina en un solo archivo ejecutable
 
 defmodule LINK do
   #Función genBin, recibe el código ensamblador y la ruta donde quiero que se guarde
   def genBin(assem, aseem_loc) do
-    #Aqui armamos los paths ,le decimos al gcc que de donde tomara el arcvhivo,
+    #Aqui armamos los paths ,le decimos al gcc que de donde tomara el archivo,
     #tomara el codigo ensambaldor y vera hacia  donde lo manda y hara que genere el ejecutable
     aseem_loc = String.replace_trailing(aseem_loc, ".c", ".s")
     #Ponemos las extensiones

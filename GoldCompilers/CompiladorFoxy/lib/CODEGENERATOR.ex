@@ -67,7 +67,7 @@ defmodule CODEGENERATOR do
 
   @spec emit_code(:constant | :function | :program | :return, any, any) :: <<_::8, _::_*8>>
   #Esta parte del codigo depende de que  version vamos a usar
-  #En nuestro caso es un ensamblador de x64 bits
+  #En nuestro caso es un ensamblador de x64 bits en AT&t
   def emit_code(:program, codeSnipped, _) do
     """
     .section        __TEXT,__text,regular,pure_instructions
@@ -146,7 +146,7 @@ defmodule CODEGENERATOR do
     #******************************************************************************************
 
     #pop %rax : sacar el valor más alto de la pila al registro% rax
-    #add Agrega  nos va  sumar  %rax con %rcx, osea e1 + e2
+    #add (Agrega) : nos va  sumar  %rax con %rcx, osea e1 + e2
 
   def emit_code(:binary, codeSnipped, :add) do
     codeSnipped <>

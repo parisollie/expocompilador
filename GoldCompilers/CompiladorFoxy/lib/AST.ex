@@ -5,8 +5,8 @@
 
 #Miguel
 
-#Aqui le decimos como una estructura, le decimos la forma de la estructura
-#La estructura tienen un nombre, tienen un valor, un nodo derecho y un nodo izquierdo
+#El AST lo definimos como una estructura, le decimos la forma de la estructura:
+#La estructura tienen un nombre, tienen un valor, un nodo derecho y un nodo izquierdo.
 defmodule AST do
  defstruct [:node_name, :val, :lf_node, :rt_node]
 end

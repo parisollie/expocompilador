@@ -162,12 +162,13 @@ defmodule PAR do
 
                                 {statement, token_list_final}
                                 ->
+                                   #Si es exitoso le mando la lista ,para que cierre con (})
                                     token_list_final = List.delete_at(token_list_final, 0)
                                     next_Token = next(token_list_final)
-                                     #Si es exitoso le mando la lista ,para que cierre con (})
+
                                      if next_Token == :right_brace
                                      #After returning he gives us the other piece of the tree
-                                     #Regresamos  donde dice : # Tenemos semicolon ?
+
                                      ###################################################################
 
                                      #Volvemos a donde fue llamado por primera vez
